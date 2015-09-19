@@ -1,0 +1,50 @@
+ipwhois:
+  name: IP Whois
+  otypes:
+    - ipv4
+  ipwhois:
+    results:
+      - key: '@'
+        multi_match:
+          keys:
+            - asn
+            - asn_cidr
+            - asn_date
+            - asn_registry
+            - asn_country_code
+        pretty_name: ASN Information
+      - key: nets
+        multi_match:
+          keys:
+            - cidr
+            - handle
+            - name
+            - range
+        pretty_name: Network Information
+      - key: nets
+        multi_match:
+          keys:
+            - description
+            - key: created
+              regex: '(\d+-\d+-\d+)T'
+            - key: updated
+              regex: '(\d+-\d+-\d+)T'
+        pretty_name: Registration Info
+      - key: nets
+        multi_match:
+          keys:
+            - city
+            - state
+            - postal_code
+            - country
+        pretty_name: Registration Locality
+      - key: nets
+        multi_match:
+          keys:
+            - abuse_emails
+        pretty_name: Abuse Email
+      - key: nets
+        multi_match:
+          keys:
+            - tech_emails
+        pretty_name: Tech Email
