@@ -76,6 +76,6 @@ class MachinaeResource:
         resp.body = output
 
 
-api = falcon.API()
-api.add_route("/{otype}/{target}", MachinaeResource())
-api.add_route("/{target}", MachinaeResource())
+application = falcon.API()
+application.add_route("/{otype}/{target}", MachinaeResource())
+application.add_route("/{target}", MachinaeResource())
