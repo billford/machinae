@@ -1,50 +1,35 @@
-ipwhois:
-  name: IP Whois
+malc0de:
+  name: Malc0de
   otypes:
     - ipv4
-  ipwhois:
+    - fqdn
+    - hash
+  webscraper:
+    request:
+      url: 'https://malc0de.com/database/index.php?search={target}'
+      method: get
     results:
-      - key: '@'
-        multi_match:
-          keys:
-            - asn
-            - asn_cidr
-            - asn_date
-            - asn_registry
-            - asn_country_code
-        pretty_name: ASN Information
-      - key: nets
-        multi_match:
-          keys:
-            - cidr
-            - handle
-            - name
-            - range
-        pretty_name: Network Information
-      - key: nets
-        multi_match:
-          keys:
-            - description
-            - key: created
-              regex: '(\d+-\d+-\d+)T'
-            - key: updated
-              regex: '(\d+-\d+-\d+)T'
-        pretty_name: Registration Info
-      - key: nets
-        multi_match:
-          keys:
-            - city
-            - state
-            - postal_code
-            - country
-        pretty_name: Registration Locality
-      - key: nets
-        multi_match:
-          keys:
-            - abuse_emails
-        pretty_name: Abuse Email
-      - key: nets
-        multi_match:
-          keys:
-            - tech_emails
-        pretty_name: Tech Email
+    - regex: '(\d{4}\-\d{1,2}\-\d{1,2})'
+      values:
+        - malc0de_date
+      pretty_name: "MC Date"
+    - regex: 'search=(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'
+      values:
+        - malc0de_ipaddr
+      pretty_name: MC IP
+    - regex: '(?!search=NA)search=([A-Z]{2})'
+      values:
+        - malc0de_country
+      pretty_name: MC Country
+    - regex: 'search=\d{4,5}..(\d{4,5})'
+      values:
+        - malc0de_asn
+      pretty_name: MC ASN
+    - regex: 'search=\d{4,5}..([A-Za-z]+)'
+      values:
+        - malc0de_asn_name
+      pretty_name: MC ASN Name
+    - regex: 'latest\-scan\/([A-Fa-f0-9]{32})'
+      values:
+        - malc0de_md5
+      pretty_name: MC MD5

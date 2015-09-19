@@ -19,37 +19,9 @@ class MachinaeResource:
 
         self.sites = OrderedDict([(k, v) for (k, v) in self.conf.items()])
 
-    @property
-    def results(self):
-        for target_info in self.targets:
-            (target, otype, _) = target_info
-
-            target_results = list()
-            for (site_name, site_conf) in self.sites.items():
-                if otype.lower() not in map(lambda x: x.lower(), site_conf["otypes"]):
-                    continue
-
-                scraper = Site.from_conf(site_conf, verbose=self.verbose)
-
-                try:
-                    with stopit.SignalTimeout(15, swallow_exc=False):
-                        run_results = scraper.run(target)
-                except stopit.TimeoutException as e:
-                    target_results.append(ErrorResult(target_info, site_conf, "Timeout"))
-                except Exception as e:
-                    target_results.append(ErrorResult(target_info, site_conf, e))
-                else:
-                    target_results.append(SiteResults(site_conf, run_results))
-
-            yield ResultSet(target_info, target_results)
-
-    def on_get(self, req, resp, target, otype=None):
-        if otype is None:
-            otype = get_target_type(target)
-            otype_detected = True
-        else:
-            otype_detected = False
-        target_info = (target, otype, otype_detected)
+    def on_get(self, req, resp, target):
+        otype = get_target_type(target)
+        target_info = (target, otype, True)
 
         target_results = list()
         for (site_name, site_conf) in self.sites.items():
@@ -76,6 +48,8 @@ class MachinaeResource:
         resp.body = output
 
 
+resource = MachinaeResource()
+
+
 application = falcon.API()
-application.add_route("/{otype}/{target}", MachinaeResource())
-application.add_route("/{target}", MachinaeResource())
+application.add_sink(resource.on_get, prefix="/(?P<target>.+)")
