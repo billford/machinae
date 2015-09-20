@@ -12,6 +12,12 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.8.1/bootstrap-table.min.css">
 
+    <style>
+      .nav-tabs {
+        margin-bottom: 15px;
+      }
+    </style>
+
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -65,9 +71,10 @@
               <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
             </div>
 
-            <ul class="nav nav-tabs" role="tablist" id="modalTabs"></ul>
-
-            <div class="tab-content" id="modalTabContents"></div>
+            <div>
+              <ul class="nav nav-tabs" role="tablist" id="modalTabs"></ul>
+              <div class="tab-content" id="modalTabContents"></div>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -114,28 +121,34 @@
               var siteName = item.site;
               var tabName = siteName.toLowerCase().replace(" ", "_")
 
-              var modalTable = $("<dl>").attr({
-                class: "dl-horizontal",
-              });
+              if ($.isEmptyObject(item.results)) {
+                var modalTable = $("<div>").attr({
+                  class: "alert alert-danger"
+                }).append("No results found")
+              } else {
+                var modalTable = $("<dl>").attr({
+                  class: "dl-horizontal",
+                });
 
-              $.each(item.results, function(pretty_name, value) {
-                if ($.isArray(value)) {
-                  var cellContents = $("<ul>").attr({
-                    class: "list-unstyled"
-                  });
-                  $.each(value, function(idxx, row) {
-                    cellContents.append(
-                      $("<li>").append(formatResult(row))
-                    );
-                  })
-                } else {
-                  var cellContents = formatResult(value);
-                }
-                modalTable.append(
-                  $("<dt>").append(pretty_name),
-                  $("<dd>").append(cellContents)
-                );
-              });
+                $.each(item.results, function(pretty_name, value) {
+                  if ($.isArray(value)) {
+                    var cellContents = $("<ul>").attr({
+                      class: "list-unstyled"
+                    });
+                    $.each(value, function(idxx, row) {
+                      cellContents.append(
+                        $("<li>").append(formatResult(row))
+                      );
+                    })
+                  } else {
+                    var cellContents = formatResult(value);
+                  }
+                  modalTable.append(
+                    $("<dt>").append(pretty_name),
+                    $("<dd>").append(cellContents)
+                  );
+                });
+              }
 
               // Append tab
               $("#modalTabs").append(
