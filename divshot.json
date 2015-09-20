@@ -5,7 +5,7 @@
   "error_page": "error.html",
   "proxy": {
     "api": {
-      "origin": "http://lvh.me:5000",
+      "origin": "https://api.machinae-app.io",
       "headers": {
         "Accept": "application/json"
       },
