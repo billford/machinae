@@ -1,0 +1,16 @@
+{
+  "name": "machinae",
+  "root": "html",
+  "clean_urls": true,
+  "error_page": "error.html",
+  "proxy": {
+    "api": {
+      "origin": "http://lvh.me:5000",
+      "headers": {
+        "Accept": "application/json"
+      },
+      "cookies": false,
+      "timeout": 30
+    }
+  }
+}

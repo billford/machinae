@@ -1,3 +1,4 @@
+import json
 import os
 from collections import OrderedDict
 
@@ -43,10 +44,10 @@ class MachinaeResource:
 
         results = [ResultSet(target_info, target_results)]
 
-        output = outputs.JsonOutput().run(results)
+        output = outputs.JsonGenerator().run(results)
 
         resp.status = falcon.HTTP_200
-        resp.body = output
+        resp.body = json.dumps(output)
 
 
 resource = MachinaeResource()
@@ -54,4 +55,4 @@ resource = MachinaeResource()
 
 application = falcon.API()
 application.add_sink(resource.on_get, prefix="/(?P<target>.+)")
-application = CORS(application, origin="*.machinae-app.com machinae.herokuapp.com")
+application = CORS(application, origin="*")
