@@ -98,8 +98,7 @@
 
         $.ajax({
           type: "GET",
-          url: "/__/proxy/api/" + target,
-          //url: "http://api.machinae-app.io/" + target,
+          url: "//api.machinae-app.io/" + target,
           beforeSend: function(xhr, settings) {
             $("#machinaeModalTitle").text("Processing...");
 
