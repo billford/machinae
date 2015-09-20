@@ -3,6 +3,7 @@ from collections import OrderedDict
 
 import falcon
 import stopit
+from wsgicors import CORS
 
 from machinae import get_target_type, outputs, utils
 from machinae import ErrorResult, ResultSet, SiteResults
@@ -53,3 +54,4 @@ resource = MachinaeResource()
 
 application = falcon.API()
 application.add_sink(resource.on_get, prefix="/(?P<target>.+)")
+application = CORS(application, origin="*.machinae-app.com machinae.herokuapp.com")
