@@ -19,7 +19,7 @@ class MachinaeResource:
         with open(MACHINAE_CONFIG, "r") as f:
             self.conf = utils.safe_load(f)
 
-        self.sites = OrderedDict([(k, v) for (k, v) in self.conf.items()])
+        self.sites = OrderedDict([(k, v) for (k, v) in self.conf.items() if v.get("default", True)])
 
     def on_get(self, req, resp, target):
         otype = get_target_type(target)
