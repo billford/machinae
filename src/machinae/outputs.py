@@ -103,13 +103,7 @@ class JsonGenerator(MachinaeOutput):
                     if result.pretty_name not in output["results"]:
                         output["results"][result.pretty_name] = list()
                     values = list(result.value.values())
-                    if len(values) == 1:
-                        output["results"][result.pretty_name].append(values[0])
-                    elif len(values) > 1:
-                        output["results"][result.pretty_name].append(values)
-                for (k, v) in output["results"].items():
-                    if len(v) == 1:
-                        output["results"][k] = v[0]
+                    output["results"][result.pretty_name].append(values)
                 records.append(output)
         return records
 
@@ -119,6 +113,9 @@ class JsonOutput(JsonGenerator):
         self.init_buffer()
 
         for record in super().run(result_sets):
+            for (k,v) in record["results"].items():
+                if len(v) == 1:
+                    record["results"][k] = v[0]
             self.print(json.dumps(record))
 
         return self._buffer.getvalue()
