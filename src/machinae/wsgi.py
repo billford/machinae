@@ -12,7 +12,7 @@ from machinae import ErrorResult, ResultSet, SiteResults
 from machinae.sites import Site
 
 
-MACHINAE_CONFIG = os.environ.get("MACHINAE_WEB_CONFIG", "machinae.web.yml")
+MACHINAE_CONFIG = os.environ.get("MACHINAE_WEB_CONFIG", "machinae.yml")
 TEST_DATA = base64.b64decode("""
 W3sicmVzdWx0cyI6IHsiUmVnaXN0cmF0aW9uIEluZm8iOiBbWyJMZXZlbCAzIENvbW11bmljYXRpb25z
 LCBJbmMuIiwgIjE5OTItMTItMDEiLCAiMjAxMi0wMi0yNCJdLCBbIkdvb2dsZSBJbmMuIiwgIjIwMTQt
